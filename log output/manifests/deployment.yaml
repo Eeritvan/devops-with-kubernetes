@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logapp-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logapp
+  template:
+    metadata:
+      labels:
+        app: logapp
+    spec:
+      containers:
+        - name: logapp
+          image: eeritvan/log_app:latest
