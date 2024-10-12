@@ -15,3 +15,12 @@ spec:
       containers:
         - name: logapp
           image: eeritvan/log_app:latest
+          env:
+          - name: PORT
+            value: "3000"
+
+        - name: pingpong
+          image: eeritvan/pingpong_app:latest
+          env:
+          - name: PORT
+            value: "3001"
