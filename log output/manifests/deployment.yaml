@@ -12,15 +12,28 @@ spec:
       labels:
         app: logapp
     spec:
+      volumes:
+        - name: timestamps
+          emptyDir: {}
+
       containers:
         - name: logapp
           image: eeritvan/log_app:latest
           env:
           - name: PORT
             value: "3000"
+          volumeMounts:
+          - name: timestamps
+            mountPath: /usr/src/app/stamps/
 
         - name: pingpong
           image: eeritvan/pingpong_app:latest
           env:
           - name: PORT
             value: "3001"
+
+        - name: stampgenerator
+          image: eeritvan/stamp_generator_app:latest
+          volumeMounts:
+          - name: timestamps
+            mountPath: /usr/src/app/stamps/
