@@ -12,6 +12,20 @@ spec:
       labels:
         app: todoapp
     spec:
+      volumes:
+        - name: shared-image
+          persistentVolumeClaim:
+            claimName: image-claim
+
       containers:
         - name: todoapp
           image: eeritvan/todo_app:latest
+          volumeMounts:
+          - name: shared-image
+            mountPath: /usr/src/app/image
+
+        - name: image-generator
+          image: eeritvan/image_generator_app:latest
+          volumeMounts:
+          - name: shared-image
+            mountPath: /usr/src/app/image

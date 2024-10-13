@@ -6,8 +6,10 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use('/image', express.static('image'));
+
 app.get('/', (_req: Request, res: Response) => {
-  res.send(`Server started in port ${port}`);
+  res.send(`<img src="/image/image.jpg" style="width: 400px;">`);
 });
 
 app.listen(port, () => {
