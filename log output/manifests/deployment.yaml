@@ -15,6 +15,9 @@ spec:
       volumes:
         - name: timestamps
           emptyDir: {}
+        - name: shared-pong
+          persistentVolumeClaim:
+            claimName: pong-claim
 
       containers:
         - name: logapp
@@ -25,12 +28,17 @@ spec:
           volumeMounts:
           - name: timestamps
             mountPath: /usr/src/app/stamps/
+          - name: shared-pong
+            mountPath: /usr/src/app/pongs/
 
         - name: pingpong
           image: eeritvan/pingpong_app:latest
           env:
           - name: PORT
             value: "3001"
+          volumeMounts:
+          - name: shared-pong
+            mountPath: /usr/src/app/pongs/
 
         - name: stampgenerator
           image: eeritvan/stamp_generator_app:latest

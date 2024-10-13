@@ -19,10 +19,11 @@ const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-const filePath = path_1.default.join(__dirname, "/stamps/stamps.txt");
+const hashFilePath = path_1.default.join(__dirname, "/stamps/stamps.txt");
+const pongFilePath = path_1.default.join(__dirname, "/pongs/pongs.txt");
 const readLastRow = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield promises_1.default.readFile(filePath, 'utf8');
+        const data = yield promises_1.default.readFile(hashFilePath, 'utf8');
         const lines = data.trim().split('\n');
         return lines[lines.length - 1];
     }
@@ -30,8 +31,20 @@ const readLastRow = () => __awaiter(void 0, void 0, void 0, function* () {
         return 'error occurred';
     }
 });
+const readPongs = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield promises_1.default.readFile(pongFilePath, 'utf8');
+        const lines = data.trim().split('\n');
+        return Number(lines[lines.length - 1]);
+    }
+    catch (err) {
+        return 0;
+    }
+});
 app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send(`${yield readLastRow()}`);
+    const lastRow = yield readLastRow();
+    const pongs = yield readPongs();
+    res.send(`${lastRow}<br> Ping / Pongs: ${pongs}`);
 }));
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
