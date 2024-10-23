@@ -18,11 +18,22 @@ spec:
             claimName: image-claim
 
       containers:
-        - name: todoapp
+        - name: todo-app
           image: eeritvan/todo_app:latest
+          env:
+          - name: PORT
+            value: "3000"
+          - name: BACKEND
+            value: "http://backend-svc:2346/todos"
           volumeMounts:
           - name: shared-image
             mountPath: /usr/src/app/image
+
+        - name: todo-backend
+          image: eeritvan/todo_backend:latest
+          env:
+          - name: PORT
+            value: "3001"
 
         - name: image-generator
           image: eeritvan/image_generator_app:latest

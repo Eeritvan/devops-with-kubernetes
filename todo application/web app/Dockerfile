@@ -2,13 +2,8 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
-COPY build/index.js .
-COPY package.json .
+COPY . .
 
-RUN npm install
+RUN npm install && npm run tsc
 
-ENV PORT=3000
-
-EXPOSE 3000
-
-ENTRYPOINT ["node", "index.js"]
+CMD ["node", "build/index.js"]

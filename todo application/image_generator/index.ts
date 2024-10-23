@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const filePath = path.join(__dirname, '/image/image.jpg');
+const filePath = path.join(__dirname, '../image/image.jpg');
 
 const fetchData = async () => {
   const response: Response = await fetch('https://picsum.photos/1200');
