@@ -8,7 +8,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-const pongFilePath = path.join(__dirname, "/pongs/pongs.txt");
+const pongFilePath = path.join(__dirname, "/pongs.txt");
 
 const readPongs = async () => {
   try {    
@@ -23,7 +23,8 @@ const readPongs = async () => {
 };
 
 app.get('/pingpong', async (_req: Request, res: Response) => {
-  res.send(`pong ${await readPongs()}`);
+  const pongs = await readPongs();
+  res.json({ pongs });
 });
 
 app.listen(port, () => {

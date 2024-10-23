@@ -2,9 +2,8 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
-COPY build/index.js .
-COPY package.json .
+COPY . .
 
-RUN npm install
+RUN npm install && npm run tsc
 
-ENTRYPOINT [ "node", "index.js" ]
+CMD ["node", "build/index.js"]
