@@ -16,6 +16,9 @@ spec:
       volumes:
         - name: timestamps
           emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: logapp-config
 
       containers:
         - name: logapp
@@ -23,9 +26,16 @@ spec:
           env:
           - name: PORT
             value: "3000"
+          - name: MESSAGE
+            valueFrom:
+              configMapKeyRef:
+                name: logapp-config
+                key: MESSAGE
           volumeMounts:
           - name: timestamps
             mountPath: /usr/src/app/stamps/
+          - name: config-volume
+            mountPath: /usr/src/app/config
 
         - name: pingpong
           image: eeritvan/pingpong_app:latest

@@ -7,11 +7,14 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
-const hashFilePath = path.join(__dirname, "../stamps/stamps.txt");
+const message = process.env.MESSAGE;
 
-const readLastRow = async () => {
+const hashFilePath = path.join(__dirname, "../stamps/stamps.txt");
+const configFilePath = path.join(__dirname, "../config/information.txt");
+
+const readLastRow = async (path: string) => {
   try {
-    const data = await fs.readFile(hashFilePath, 'utf8');
+    const data = await fs.readFile(path, 'utf8');
     const lines = data.trim().split('\n');
     return lines[lines.length - 1];
   } catch (err) {
@@ -30,9 +33,14 @@ const getPongs = async () => {
 };
 
 app.get('/', async (_req: Request, res: Response) => {
-  const lastRow: string = await readLastRow(); 
+  const stamp: string = await readLastRow(hashFilePath); 
+  const configFileContent: string = await readLastRow(configFilePath); 
   const pongs: Number = await getPongs();
-  res.send(`${lastRow}<br> Ping / Pongs: ${pongs}`);
+  res.send(`file content: ${configFileContent} <br>
+            env variable: MESSAGE=${message} <br>
+            ${stamp} <br>
+            Ping / Pongs: ${pongs}
+          `);
 });
 
 app.listen(port, () => {
