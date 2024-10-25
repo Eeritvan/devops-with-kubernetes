@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+  namespace: todoapp
+spec:
+  ports:
+  - port: 3002
+    name: db
+  clusterIP: None
+  selector:
+    app: todospostgresapp
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+  namespace: todoapp
+data:
+  init.sql: |
+    CREATE TABLE todos (
+      id SERIAL PRIMARY KEY,
+      task TEXT NOT NULL
+    );
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-stset
+  namespace: todoapp
+spec:
+  serviceName: postgres-svc
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todospostgresapp
+  template:
+    metadata:
+      labels:
+        app: todospostgresapp
+    spec:
+      volumes:
+        - name: postgres-config
+          configMap:
+            name: postgres-configmap
+      containers:
+        - name: todopostgres
+          image: postgres:alpine
+          env:
+            - name: POSTGRES_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: todoapp-postgres-key
+                  key: DB_PASSWORD
+          ports:
+            - name: db
+              containerPort: 3002
+          volumeMounts:
+            - name: postgres-config
+              mountPath: /docker-entrypoint-initdb.d
+            - name: todo-data
+              mountPath: /var/lib/postgresql/data
+
+  volumeClaimTemplates:
+    - metadata:
+        name: todo-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 10Mi

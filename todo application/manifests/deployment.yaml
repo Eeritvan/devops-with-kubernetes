@@ -35,6 +35,18 @@ spec:
           env:
           - name: PORT
             value: "3001"
+          - name: PGHOST
+            value: "postgres-svc"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: todoapp-postgres-key
+                key: DB_USERNAME
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: todoapp-postgres-key
+                key: DB_PASSWORD
 
         - name: image-generator
           image: eeritvan/image_generator_app:latest
