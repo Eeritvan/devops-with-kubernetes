@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: todoapp-daily
+  namespace: todoapp
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: daily-todo
+            image: eeritvan/daily_todo:latest
+            env: 
+            - name: REFERER_URL
+              value: "http://todo-app-svc:2345"
+            - name: TARGET_URL
+              value: "http://backend-svc:2346/todos"
+          restartPolicy: OnFailure

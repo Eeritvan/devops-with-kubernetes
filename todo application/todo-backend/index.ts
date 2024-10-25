@@ -8,6 +8,7 @@ const port = process.env.PORT;
 const app: Express = express();
 const client = new Client();
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/todos', async (_req: Request, res: Response) => {
@@ -21,16 +22,17 @@ app.get('/todos', async (_req: Request, res: Response) => {
 });
 
 app.post('/todos', async (req: Request, res: Response) => {
-  const referer = req.get('Referer');
-  if (referer) {
-    try {
+  try {
+    const referer = req.get('Referer');
+    if (referer) {
       await client.query(`INSERT INTO todos(task) VALUES ('${req.body.todo}');`);
       res.redirect(referer);
-    } catch (e) {
-      console.error(e);
+    } else {
+      res.status(500).send('Internal Server Error');
     }
-  } else {
-    res.send("Error");
+  } catch (e) {
+    console.error(e);
+    res.status(500).send('Internal Server Error');
   }
 });
 
