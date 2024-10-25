@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+  namespace: logoutput
+spec:
+  ports:
+  - port: 3002
+    name: db
+  clusterIP: None
+  selector:
+    app: pingpostgresapp
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: logoutput
+  name: postgres-configmap
+data:
+  init.sql: |
+    CREATE TABLE pings (
+      id SERIAL PRIMARY KEY,
+      count INTEGER NOT NULL DEFAULT 0
+    );
+    INSERT INTO pings (count) VALUES (0);
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-stset
+  namespace: logoutput
+spec:
+  serviceName: postgres-svc
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pingpostgresapp
+  template:
+    metadata:
+      labels:
+        app: pingpostgresapp
+    spec:
+      volumes:
+        - name: postgres-config
+          configMap:
+            name: postgres-configmap
+
+      containers:
+        - name: pingpongpostgres
+          image: postgres:alpine
+          env:
+            - name: POSTGRES_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: pingpong-postgres-key
+                  key: DB_PASSWORD
+          ports:
+            - name: db
+              containerPort: 3002
+          volumeMounts:
+            - name: postgres-config
+              mountPath: /docker-entrypoint-initdb.d
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+        
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+      namespace: logoutput
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 10Mi
