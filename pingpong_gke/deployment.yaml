@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-gke-dep
+  namespace: gke-pingpong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pingpong
+  template:
+    metadata:
+      labels:
+        app: pingpong
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: pingpong-config
+
+      containers:
+        - name: pingpong
+          image: eeritvan/pingpong_app:latest
+          env:
+          - name: PORT
+            value: "3000"
+          - name: PGHOST
+            value: "postgres-svc"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: pingpong-postgres-key
+                key: DB_USERNAME
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pingpong-postgres-key
+                key: DB_PASSWORD
