@@ -5,6 +5,8 @@ metadata:
   namespace: todoapp
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: todoapp
@@ -14,24 +16,24 @@ spec:
         app: todoapp
     spec:
       volumes:
-        - name: shared-image
+        - name: image
           persistentVolumeClaim:
             claimName: image-claim
 
       containers:
         - name: todo-app
-          image: eeritvan/todo_app:latest
+          image: APP/IMAGE
           env:
           - name: PORT
             value: "3000"
           - name: BACKEND
             value: "http://backend-svc:2346/todos"
           volumeMounts:
-          - name: shared-image
+          - name: image
             mountPath: /usr/src/app/image
 
         - name: todo-backend
-          image: eeritvan/todo_backend:latest
+          image: BACKEND/IMAGE
           env:
           - name: PORT
             value: "3001"
@@ -49,7 +51,7 @@ spec:
                 key: DB_PASSWORD
 
         - name: image-generator
-          image: eeritvan/image_generator_app:latest
+          image: STAMPGENERATOR/IMAGE
           volumeMounts:
-          - name: shared-image
+          - name: image
             mountPath: /usr/src/app/image

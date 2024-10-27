@@ -11,6 +11,11 @@ const client = new Client();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', async (_req: Request, res: Response) => {
+  res.status(200).send('healthy');
+});
+
+
 app.get('/todos', async (_req: Request, res: Response) => {
   try {
     const result = await client.query(`SELECT task FROM todos;`);

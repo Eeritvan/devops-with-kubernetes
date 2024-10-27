@@ -9,14 +9,14 @@ spec:
     name: db
   clusterIP: None
   selector:
-    app: todospostgresapp
+    app: todosdb
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-configmap
+  name: config
   namespace: todoapp
 data:
   init.sql: |
@@ -37,16 +37,16 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: todospostgresapp
+      app: todosdb
   template:
     metadata:
       labels:
-        app: todospostgresapp
+        app: todosdb
     spec:
       volumes:
-        - name: postgres-config
+        - name: config
           configMap:
-            name: postgres-configmap
+            name: config
       containers:
         - name: todopostgres
           image: postgres:alpine
@@ -60,17 +60,17 @@ spec:
             - name: db
               containerPort: 3002
           volumeMounts:
-            - name: postgres-config
+            - name: config
               mountPath: /docker-entrypoint-initdb.d
-            - name: todo-data
+            - name: data
               mountPath: /var/lib/postgresql/data
+              subPath: postgres
 
   volumeClaimTemplates:
     - metadata:
-        name: todo-data
+        name: data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: local-path
         resources:
           requests:
             storage: 10Mi

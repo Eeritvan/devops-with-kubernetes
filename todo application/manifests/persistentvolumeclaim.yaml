@@ -4,7 +4,6 @@ metadata:
   name: image-claim
   namespace: todoapp
 spec:
-  storageClassName: image-pv 
   accessModes:
     - ReadWriteOnce
   resources:

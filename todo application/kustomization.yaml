@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests/namespace.yaml
+  - manifests/secret.yaml
+  - manifests/todo-db.yaml
+  - manifests/persistentvolume.yaml
+  - manifests/persistentvolumeclaim.yaml
+  - manifests/app-service.yaml
+  - manifests/backend-service.yaml
+  - manifests/ingress.yaml
+  - manifests/deployment.yaml
+  - manifests/cronjob.yaml
+
+images:
+  - name: APP/IMAGE
+    newName: eeritvan/todo_app:latest
+  - name: BACKEND/IMAGE
+    newName: eeritvan/todo_backend:latest
+  - name: STAMPGENERATOR/IMAGE
+    newName: eeritvan/image_generator_app:latest
+  - name: DAILYTODO/IMAGE
+    newName: eeritvan/daily_todo:latest

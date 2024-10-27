@@ -1,0 +1,93 @@
+name: Release application
+
+on:
+  push:
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+  SERVICE: todoapp
+  BRANCH: ${{ github.ref_name }}
+
+jobs:
+  build-publish-deploy:
+    name: Build, Publish and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+     
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v2
+     
+      - name: 'Use gcloud CLI'
+        run: gcloud info
+
+      - run: gcloud --quiet auth configure-docker
+
+      - name: 'Get GKE credentials'
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+          cluster_name: '${{ env.GKE_CLUSTER }}'
+          project_id: '${{ env.PROJECT_ID }}'
+          location: '${{ env.GKE_ZONE }}'
+
+
+      - name: Build app
+        run: cd "./todo application/web app/" && docker build --tag "gcr.io/$PROJECT_ID/todo_app:$BRANCH-$GITHUB_SHA" .
+
+      - name: Build backend
+        run: cd "./todo application/todo-backend/" && docker build --tag "gcr.io/$PROJECT_ID/todo_backend:$BRANCH-$GITHUB_SHA" .
+
+      - name: Build image_gen
+        run: cd "./todo application/image_generator/" && docker build --tag "gcr.io/$PROJECT_ID/image_generator_app:$BRANCH-$GITHUB_SHA" .
+
+      - name: Build daily_todo
+        run: cd "./todo application/daily_todo/" && docker build --tag "gcr.io/$PROJECT_ID/daily_todo:$BRANCH-$GITHUB_SHA" .
+
+
+      - name: Publish app
+        run: cd "./todo application/web app/" && docker push "gcr.io/$PROJECT_ID/todo_app:$BRANCH-$GITHUB_SHA"
+
+      - name: Publish backend
+        run: cd "./todo application/todo-backend/" && docker push "gcr.io/$PROJECT_ID/todo_backend:$BRANCH-$GITHUB_SHA"
+
+      - name: Publish image_gen
+        run: cd "./todo application/image_generator/" && docker push "gcr.io/$PROJECT_ID/image_generator_app:$BRANCH-$GITHUB_SHA"
+
+      - name: Publish daily_todo
+        run: cd "./todo application/daily_todo/" && docker push "gcr.io/$PROJECT_ID/daily_todo:$BRANCH-$GITHUB_SHA"
+
+
+      - name: Install sops
+        run: |
+          curl -LO https://github.com/getsops/sops/releases/download/v3.9.1/sops-v3.9.1.linux.amd64
+          sudo mv sops-v3.9.1.linux.amd64 /usr/local/bin/sops
+          sudo chmod +x /usr/local/bin/sops
+
+      - name: Decrypting secrets
+        run: |
+          cd "./todo application/manifests/"
+          echo "${{ secrets.SOPS }}" > key.txt
+          export SOPS_AGE_KEY_FILE=$(pwd)/key.txt
+          sops --decrypt secret.enc.yaml > secret.yaml
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2.1.0
+
+      - name: Deploy
+        run: |-
+          cd "./todo application"
+          kustomize edit set image APP/IMAGE=gcr.io/$PROJECT_ID/todo_app:$BRANCH-$GITHUB_SHA
+          kustomize edit set image BACKEND/IMAGE=gcr.io/$PROJECT_ID/todo_backend:$BRANCH-$GITHUB_SHA
+          kustomize edit set image STAMPGENERATOR/IMAGE=gcr.io/$PROJECT_ID/image_generator_app:$BRANCH-$GITHUB_SHA
+          kustomize edit set image DAILYTODO/IMAGE=gcr.io/$PROJECT_ID/daily_todo:$BRANCH-$GITHUB_SHA
+          kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment $SERVICE -n todoapp
+          kubectl get services -o wide
