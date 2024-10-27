@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: logapp-config
-  namespace: logoutput
-data:
-  information.txt: this text is from file
-  MESSAGE: "hello world"

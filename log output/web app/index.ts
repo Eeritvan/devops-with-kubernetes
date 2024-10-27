@@ -8,6 +8,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 const message = process.env.MESSAGE;
+const pingpong = process.env.PINGPONG;
 
 const hashFilePath = path.join(__dirname, "../stamps/stamps.txt");
 const configFilePath = path.join(__dirname, "../config/information.txt");
@@ -24,7 +25,7 @@ const readLastRow = async (path: string) => {
 
 const getPongs = async () => {
   try {
-    const response = await fetch("http://localhost:3001/pingpong");
+    const response = await fetch(`${pingpong}`);
     const data = await response.json();
     return data.pongs;
   } catch (err) {

@@ -9,15 +9,15 @@ spec:
     name: db
   clusterIP: None
   selector:
-    app: pingpostgresapp
+    app: pingpongdb
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: config
   namespace: logoutput
-  name: postgres-configmap
 data:
   init.sql: |
     CREATE TABLE pings (
@@ -38,19 +38,19 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: pingpostgresapp
+      app: pingpongdb
   template:
     metadata:
       labels:
-        app: pingpostgresapp
+        app: pingpongdb
     spec:
       volumes:
-        - name: postgres-config
+        - name: config
           configMap:
-            name: postgres-configmap
+            name: config
 
       containers:
-        - name: pingpongpostgres
+        - name: pingpongdb
           image: postgres:alpine
           env:
             - name: POSTGRES_PASSWORD 
@@ -62,18 +62,18 @@ spec:
             - name: db
               containerPort: 3002
           volumeMounts:
-            - name: postgres-config
+            - name: config
               mountPath: /docker-entrypoint-initdb.d
-            - name: postgres-data
+            - name: data
               mountPath: /var/lib/postgresql/data
+              subPath: postgres
         
   volumeClaimTemplates:
   - metadata:
-      name: postgres-data
+      name: data
       namespace: logoutput
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: local-path
       resources:
         requests:
           storage: 10Mi
