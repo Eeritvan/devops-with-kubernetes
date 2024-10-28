@@ -84,7 +84,7 @@ jobs:
       - name: Deploy
         run: |-
           cd "./todo application"
-          if [ $BRANCH = "main" ]; then
+          if [ $BRANCH = "master" ]; then
             kubectl config set-context --current --namespace=default
             kustomize edit set namespace default
           else
