@@ -34,7 +34,7 @@ jobs:
 
       - name: delete
         run: |
-          echo ("BRANCH")
+          echo ("$BRANCH")
           if [ $BRANCH != "master" ]; then
             echo ("other")
             kubectl delete all --all -n $BRANCH
