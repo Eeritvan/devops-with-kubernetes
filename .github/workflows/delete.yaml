@@ -7,7 +7,7 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
-  BRANCH: ${{ github.ref_name }}
+  NAMESPACE: ${{ github.event.ref }}
 
 jobs:
   build-publish-deploy:
@@ -34,12 +34,9 @@ jobs:
 
       - name: delete
         run: |
-          echo "$BRANCH"
-          if [ $BRANCH != "master" ]; then
-            echo "other"
-            kubectl delete all --all -n $BRANCH
-            kubectl delete namespace $BRANCH
+          if [ $NAMESPACE != "default" ]; then
+            kubectl delete all --all -n $NAMESPACE
+            kubectl delete namespace $NAMESPACE
           else
-            echo "master"
-            kubectl delete all --all -n $BRANCH
+            kubectl delete all --all -n default
           fi
