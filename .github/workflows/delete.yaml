@@ -34,12 +34,12 @@ jobs:
 
       - name: delete
         run: |
-          echo ("$BRANCH")
+          echo "$BRANCH"
           if [ $BRANCH != "master" ]; then
-            echo ("other")
+            echo "other"
             kubectl delete all --all -n $BRANCH
             kubectl delete namespace $BRANCH
           else
-            echo ("master")
+            echo "master"
             kubectl delete all --all -n $BRANCH
           fi
