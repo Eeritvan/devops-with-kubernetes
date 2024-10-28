@@ -83,6 +83,7 @@ jobs:
 
       - name: Deploy
         run: |-
+          cd "./todo application"
           if [ $BRANCH = "main" ]; then
             kubectl config set-context --current --namespace=default
             kustomize edit set namespace default
@@ -91,7 +92,6 @@ jobs:
             kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
             kustomize edit set namespace ${GITHUB_REF#refs/heads/}
           fi
-          cd "./todo application"
           kustomize edit set image APP/IMAGE=gcr.io/$PROJECT_ID/todo_app:$BRANCH-$GITHUB_SHA
           kustomize edit set image BACKEND/IMAGE=gcr.io/$PROJECT_ID/todo_backend:$BRANCH-$GITHUB_SHA
           kustomize edit set image STAMPGENERATOR/IMAGE=gcr.io/$PROJECT_ID/image_generator_app:$BRANCH-$GITHUB_SHA
