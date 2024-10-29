@@ -17,8 +17,8 @@ spec:
               value: "http://todo-app-svc:2345"
             - name: TARGET_URL
               value: "http://backend-svc:2346/todos"
-          resources:
-             limits:
-               cpu: "50m"
-               memory: "50Mi"
+            resources:
+              limits:
+                cpu: "50m"
+                memory: "50Mi"
           restartPolicy: OnFailure
