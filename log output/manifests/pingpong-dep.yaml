@@ -48,3 +48,7 @@ spec:
               secretKeyRef:
                 name: pingpong-postgres-key
                 key: DB_PASSWORD
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"

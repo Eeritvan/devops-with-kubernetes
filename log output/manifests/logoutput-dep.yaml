@@ -66,6 +66,10 @@ spec:
             mountPath: /usr/src/app/stamps/
           - name: config-volume
             mountPath: /usr/src/app/config
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
 
         - name: stampgenerator
           image: eeritvan/stamp_generator_app:latest
@@ -73,3 +77,7 @@ spec:
           volumeMounts:
           - name: timestamps
             mountPath: /usr/src/app/stamps/
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
