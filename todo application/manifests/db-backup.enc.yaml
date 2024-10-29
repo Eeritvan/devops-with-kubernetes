@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: private-key-configmap
+    namespace: todoapp
+data:
+    private-key.json: ENC[AES256_GCM,data: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,iv:8CNUawgGzMF4M6CVLd5fnfcu/lF3htZcCagCo+VLm50=,tag:3DCGUgTjivOcggopC/QmLw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1dkgrxnl6lwkytr55407y0ka4f73zl0rlyzmjtxsryqczq3n9rvss2p6dcp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBDMGNYYXlONU9LbG51OWxr
+            cFhyYVBWRGdGcUxqMHN1Q1VqZ29XK2FVK0dVCkJPOXdUV1NYQnAvVFJpVzZuSEdu
+            TFdVZUpCSVMrMXp0aWZBZU5may9YMjgKLS0tIGxzUHNzOGRoc1pvb05XL2pKL21N
+            Qld2NnBaVHNiM245WDRhdDhhQ3VoK3MKM6aPUodmFYvGCidvZErS3Vi/eil86XW0
+            DUsG0FZZwhyuxwXJauMrOXAwNp+GCLZt+o4eWuQ4JLht8Wq9AVysmg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-29T20:42:57Z"
+    mac: ENC[AES256_GCM,data:JfAUFTgAfZZkIBCGxtkfMg/RHT0/tfGDa/8LkMcVdOnD4vh3hLCrSi6ns6XJ8QGj6fPkhF0le6dd6yyjvrM4hrAAkEsJOjTdizy/XrwVMy79e6j5qVxyG4DSQa3fsCQonoPFruZkX3WyCFpM9KUB8BUBuRvscksg4TOfrEBk8LM=,iv:YWoTUZMNnVG8mV5GNiDxUTYYIPoJGWfFtEyTaMOoxt0=,tag:pJ8DV5t0swy6Nunt3U0rlQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data)$
+    version: 3.9.1
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+    name: backup
+    namespace: todoapp
+spec:
+    schedule: 0 0 * * *
+    jobTemplate:
+        spec:
+            template:
+                spec:
+                    volumes:
+                        - name: private-key-volume
+                          configMap:
+                            name: private-key-configmap
+                            items:
+                                - key: private-key.json
+                                  path: private-key.json
+                    containers:
+                        - name: backup
+                          image: eeritvan/todo_backup:latest
+                          env:
+                            - name: POSTGRES_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                    name: todoapp-postgres-key
+                                    key: DB_PASSWORD
+                            - name: URL
+                              value: postgres://postgres:$(POSTGRES_PASSWORD)@postgres-svc:5432/postgres
+                          volumeMounts:
+                            - name: private-key-volume
+                              mountPath: /usr/src/app/private-key.json
+                              subPath: private-key.json
+                    restartPolicy: OnFailure
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1dkgrxnl6lwkytr55407y0ka4f73zl0rlyzmjtxsryqczq3n9rvss2p6dcp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBDMGNYYXlONU9LbG51OWxr
+            cFhyYVBWRGdGcUxqMHN1Q1VqZ29XK2FVK0dVCkJPOXdUV1NYQnAvVFJpVzZuSEdu
+            TFdVZUpCSVMrMXp0aWZBZU5may9YMjgKLS0tIGxzUHNzOGRoc1pvb05XL2pKL21N
+            Qld2NnBaVHNiM245WDRhdDhhQ3VoK3MKM6aPUodmFYvGCidvZErS3Vi/eil86XW0
+            DUsG0FZZwhyuxwXJauMrOXAwNp+GCLZt+o4eWuQ4JLht8Wq9AVysmg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-29T20:42:57Z"
+    mac: ENC[AES256_GCM,data:JfAUFTgAfZZkIBCGxtkfMg/RHT0/tfGDa/8LkMcVdOnD4vh3hLCrSi6ns6XJ8QGj6fPkhF0le6dd6yyjvrM4hrAAkEsJOjTdizy/XrwVMy79e6j5qVxyG4DSQa3fsCQonoPFruZkX3WyCFpM9KUB8BUBuRvscksg4TOfrEBk8LM=,iv:YWoTUZMNnVG8mV5GNiDxUTYYIPoJGWfFtEyTaMOoxt0=,tag:pJ8DV5t0swy6Nunt3U0rlQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data)$
+    version: 3.9.1

@@ -11,6 +11,7 @@ resources:
   - manifests/ingress.yaml
   - manifests/deployment.yaml
   - manifests/cronjob.yaml
+  - manifests/db-backup.yaml
 
 images:
   - name: APP/IMAGE
@@ -21,3 +22,5 @@ images:
     newName: eeritvan/image_generator_app:latest
   - name: DAILYTODO/IMAGE
     newName: eeritvan/daily_todo:latest
+  - name: BACKUPBD/IMAGE
+    newName: eeritvan/todo_backup:latest

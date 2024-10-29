@@ -49,7 +49,7 @@ spec:
             name: config
       containers:
         - name: todopostgres
-          image: postgres:alpine
+          image: postgres:16-alpine
           env:
             - name: POSTGRES_PASSWORD 
               valueFrom:

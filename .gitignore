@@ -3,4 +3,5 @@ node_modules
 .env
 key.txt
 secret.yaml
+db-backup.yaml
 private-key.json
