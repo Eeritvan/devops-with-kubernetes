@@ -31,6 +31,10 @@ spec:
           volumeMounts:
           - name: image
             mountPath: /usr/src/app/image
+          resources:
+             limits:
+               cpu: "100m"
+               memory: "100Mi"
 
         - name: todo-backend
           image: BACKEND/IMAGE
@@ -49,9 +53,17 @@ spec:
               secretKeyRef:
                 name: todoapp-postgres-key
                 key: DB_PASSWORD
+          resources:
+             limits:
+               cpu: "100m"
+               memory: "100Mi"
 
         - name: image-generator
           image: STAMPGENERATOR/IMAGE
           volumeMounts:
           - name: image
             mountPath: /usr/src/app/image
+          resources:
+             limits:
+               cpu: "100m"
+               memory: "100Mi"
