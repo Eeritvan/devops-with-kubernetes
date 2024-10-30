@@ -75,4 +75,4 @@ spec:
                memory: "100Mi"
           labels:
             app: todoapp
-            component: image-gen
+            component: imagegen
