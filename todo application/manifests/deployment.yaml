@@ -32,9 +32,12 @@ spec:
           - name: image
             mountPath: /usr/src/app/image
           resources:
-             limits:
-               cpu: "100m"
-               memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+            requests:
+              cpu: "1m"
+              memory: "1Mi"
 
         - name: todo-backend
           image: BACKEND/IMAGE
@@ -54,9 +57,12 @@ spec:
                 name: todoapp-postgres-key
                 key: DB_PASSWORD
           resources:
-             limits:
-               cpu: "100m"
-               memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+            requests:
+              cpu: "1m"
+              memory: "1Mi"
 
         - name: image-generator
           image: STAMPGENERATOR/IMAGE
@@ -64,6 +70,9 @@ spec:
           - name: image
             mountPath: /usr/src/app/image
           resources:
-             limits:
-               cpu: "100m"
-               memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+            requests:
+              cpu: "1m"
+              memory: "1Mi"

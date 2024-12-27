@@ -61,8 +61,11 @@ spec:
                               subPath: private-key.json
                           resources:
                             limits:
-                                cpu: 150m
-                                memory: 150Mi
+                              cpu: "100m"
+                              memory: "100Mi"
+                            requests:
+                              cpu: "1m"
+                              memory: "1Mi"
                     restartPolicy: OnFailure
 sops:
     kms: []
