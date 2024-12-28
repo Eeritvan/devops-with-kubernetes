@@ -44,6 +44,15 @@ app.get('/', async (_req: Request, res: Response) => {
           `);
 });
 
+app.get('/health', async (_req: Request, res: Response) => {
+  try {
+    await fetch(`${pingpong}`);
+    res.status(200).send('healthy');
+  } catch (error) {
+    res.status(500).send('not healthy - query failed');
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });

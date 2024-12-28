@@ -32,6 +32,12 @@ spec:
       containers:
         - name: pingpong
           image: eeritvan/pingpong_app:latest
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /health
+              port: 3001
           imagePullPolicy: Always
           env:
           - name: PORT
