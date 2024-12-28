@@ -6,7 +6,7 @@ dotenv.config();
 
 const port = process.env.PORT;
 const app: Express = express();
-const client = new Client();
+let client = new Client();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,7 +43,28 @@ app.post('/todos', async (req: Request, res: Response) => {
   }
 });
 
+
+app.get('/health', async (_req: Request, res: Response) => {
+  try {
+    await client.query('SELECT 1');
+    res.status(200).send('healthy');
+  } catch (error) {
+    res.status(500).send('not healthy - query failed');
+  }
+});
+
+const connectWithRetry = async () => {
+  try {
+    await client.connect();
+  } catch (error) {
+    await client.end().catch(console.error);
+    client = new Client();
+    setTimeout(connectWithRetry, 15000);
+  }
+};
+
+
 app.listen(port, async () => {
-  await client.connect();
+  connectWithRetry();
   console.log(`App listening on port ${port}`);
 });
