@@ -52,13 +52,15 @@ spec:
           - name: PGUSER
             valueFrom:
               secretKeyRef:
-                name: todoapp-postgres-key
+                name: todoapp-secrets
                 key: DB_USERNAME
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
-                name: todoapp-postgres-key
+                name: todoapp-secrets
                 key: DB_PASSWORD
+          - name: NATS_URL
+            value: "nats://my-nats.default.svc.cluster.local:4222"
           resources:
             limits:
               cpu: "100m"

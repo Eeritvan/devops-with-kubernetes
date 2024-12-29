@@ -55,7 +55,7 @@ spec:
             - name: POSTGRES_PASSWORD 
               valueFrom:
                 secretKeyRef:
-                  name: todoapp-postgres-key
+                  name: todoapp-secrets
                   key: DB_PASSWORD
           ports:
             - name: db

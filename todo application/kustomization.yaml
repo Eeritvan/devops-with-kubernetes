@@ -12,6 +12,7 @@ resources:
   - manifests/backend-service.yaml
   - manifests/ingress.yaml
   - manifests/deployment.yaml
+  - manifests/broadcast.yaml
   - manifests/cronjob.yaml
   - manifests/db-backup.yaml
 
@@ -26,3 +27,5 @@ images:
     newName: eeritvan/daily_todo:latest
   - name: BACKUPBD/IMAGE
     newName: eeritvan/todo_backup:latest
+  - name: BROADCAST/IMAGE
+    newName: eeritvan/broadcast:latest

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcast-dep
+  namespace: todoapp
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: broadcast
+  template:
+    metadata:
+      labels:
+        app: broadcast
+    spec:
+      containers:
+        - name: broadcast 
+          image: BROADCAST/IMAGE
+          env:
+          - name: NATS_URL
+            value: "nats://my-nats.default.svc.cluster.local:4222"
+          - name: WEBHOOK_URL
+            valueFrom:
+              secretKeyRef:
+                name: todoapp-secrets
+                key: DISCORD_WEBHOOK_URL
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+            requests:
+              cpu: "1m"
+              memory: "1Mi"
