@@ -6,7 +6,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: todoapp
+    app: todo-backend
   ports:
     - port: 2346
       protocol: TCP
