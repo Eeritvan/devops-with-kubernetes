@@ -22,7 +22,8 @@ data:
   init.sql: |
     CREATE TABLE todos (
       id SERIAL PRIMARY KEY,
-      task TEXT NOT NULL
+      task TEXT NOT NULL,
+      done BOOLEAN DEFAULT false
     );
 
 ---

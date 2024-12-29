@@ -3,6 +3,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+interface Todo {
+  id: string;
+  task: string;
+  done: boolean;
+}
+
 const app: Express = express();
 const port = process.env.PORT;
 const backend = process.env.BACKEND;
@@ -13,8 +19,19 @@ app.get('/', async (_req: Request, res: Response) => {
   let todoListItems = ''; 
   try {
     const listData = await fetch(`${backend}`);
-    const parsedData = await  listData.json();
-    todoListItems = parsedData.map((todo: string) => `<li>${todo}</li>`).join('');
+    const parsedData: Todo[] = await listData.json();
+    todoListItems = parsedData.map((todo: Todo) => `
+      <li>
+        <form action="/todos/${todo.id}" method="POST">
+          ${todo.task}
+          ${!todo.done ? `
+            <button type="submit">
+              done
+            </button>
+          ` : ''}
+        </form>
+      </li>
+    `).join('');
   } catch (e) {
     console.error(e);
   }
