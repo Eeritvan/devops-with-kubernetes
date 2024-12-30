@@ -40,7 +40,8 @@ app.get('/', async (_req: Request, res: Response) => {
   res.send(`file content: ${configFileContent} <br>
             env variable: MESSAGE=${message} <br>
             ${stamp} <br>
-            Ping / Pongs: ${pongs}
+            Ping / Pongs: ${pongs} <br>
+            moi!!
           `);
 });
 
