@@ -41,7 +41,7 @@ app.get('/', async (_req: Request, res: Response) => {
             env variable: MESSAGE=${message} <br>
             ${stamp} <br>
             Ping / Pongs: ${pongs} <br>
-            moi!!!!
+            moi!!
           `);
 });
 
