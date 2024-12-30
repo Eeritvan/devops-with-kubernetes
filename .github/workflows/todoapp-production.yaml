@@ -60,7 +60,7 @@ jobs:
         uses: imranismail/setup-kustomize@v2
 
       - name: Use right images
-        working-directory: "./todo application/overlays/production"
+        working-directory: "./todo application/overlay/prod"
         run: |-
           kustomize edit set image APP/IMAGE=eeritvan/todo_app:$GITHUB_SHA
           kustomize edit set image BACKEND/IMAGE=eeritvan/todo_backend:$GITHUB_SHA
