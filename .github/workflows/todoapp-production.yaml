@@ -20,20 +20,40 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and publish 
+      - name: Build and publish todo_app
         working-directory: ./todo application/
         run: |-
           docker build --tag "eeritvan/todo_app:$GITHUB_SHA" "./web app"
-          docker build --tag "eeritvan/todo_backend:$GITHUB_SHA" "./todo-backend"
-          docker build --tag "eeritvan/image_generator_app:$GITHUB_SHA" "./image_generator"
-          docker build --tag "eeritvan/daily_todo:$GITHUB_SHA" "./daily_todo"
-          docker build --tag "eeritvan/todo_backup:$GITHUB_SHA" "./todo_backup"
-          docker build --tag "eeritvan/broadcast:$GITHUB_SHA" "./broadcaster"
           docker push "eeritvan/todo_app:$GITHUB_SHA"
+
+      - name: Build and publish todo_backend
+        working-directory: ./todo application/
+        run: |-
+          docker build --tag "eeritvan/todo_backend:$GITHUB_SHA" "./todo-backend"
           docker push "eeritvan/todo_backend:$GITHUB_SHA"
+
+      - name: Build and publish image_generator_app
+        working-directory: ./todo application/
+        run: |-
+          docker build --tag "eeritvan/image_generator_app:$GITHUB_SHA" "./image_generator"
           docker push "eeritvan/image_generator_app:$GITHUB_SHA"
+
+      - name: Build and publish daily_todo
+        working-directory: ./todo application/
+        run: |-
+          docker build --tag "eeritvan/daily_todo:$GITHUB_SHA" "./daily_todo"
           docker push "eeritvan/daily_todo:$GITHUB_SHA"
+
+      - name: Build and publish todo_backup
+        working-directory: ./todo application/
+        run: |-
+          docker build --tag "eeritvan/todo_backup:$GITHUB_SHA" "./todo_backup"
           docker push "eeritvan/todo_backup:$GITHUB_SHA"
+
+      - name: Build and publish broadcast
+        working-directory: ./todo application/
+        run: |-
+          docker build --tag "eeritvan/broadcast:$GITHUB_SHA" "./broadcaster"
           docker push "eeritvan/broadcast:$GITHUB_SHA"
 
       - name: Set up Kustomize
