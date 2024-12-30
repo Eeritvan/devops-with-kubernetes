@@ -23,7 +23,7 @@ app.get(`${basePath}/`, async (_req: Request, res: Response) => {
     const parsedData: Todo[] = await listData.json();
     todoListItems = parsedData.map((todo: Todo) => `
       <li>
-        <form action="/todos/${todo.id}" method="POST">
+        <form action="${basePath}/todos/${todo.id}" method="POST">
           ${todo.task}
           ${!todo.done ? `
             <button type="submit">
@@ -41,7 +41,7 @@ app.get(`${basePath}/`, async (_req: Request, res: Response) => {
               <div>
                 <img src="../image/image.jpg" style="width: 400px;">
               </div>
-              <form action="/todos" method="POST">
+              <form action="${basePath}/todos" method="POST">
                 <input name="todo"/>
                 <Button type="submit"> Create TODO </Button>
               </form>
