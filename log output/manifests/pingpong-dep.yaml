@@ -20,10 +20,10 @@ metadata:
   name: pingpong-dep
   namespace: logoutput
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: pingpongapp
+      app: pingpongapps
   template:
     metadata:
       labels:
