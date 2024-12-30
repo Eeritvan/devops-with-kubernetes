@@ -4,7 +4,6 @@ resources:
   - manifests/namespace.yaml
   - manifests/analysistemplate.yaml
   - manifests/rollout.yaml
-  - manifests/secret.yaml
   - manifests/todo-db.yaml
   - manifests/persistentvolume.yaml
   - manifests/persistentvolumeclaim.yaml
