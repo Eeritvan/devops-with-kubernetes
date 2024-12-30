@@ -13,7 +13,6 @@ resources:
   - manifests/deployment.yaml
   - manifests/broadcast.yaml
   - manifests/cronjob.yaml
-  - manifests/db-backup.yaml
 
 images:
   - name: APP/IMAGE
