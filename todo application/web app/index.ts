@@ -12,7 +12,7 @@ interface Todo {
 const app: Express = express();
 const port = process.env.PORT;
 const backend = process.env.BACKEND;
-const basePath = process.env.NODE_ENV === 'staging' ? '/staging' : '';
+const basePath = process.env.ENVIRONMENT === 'staging' ? '/staging' : '';
 
 app.use('/image', express.static('image'));
 

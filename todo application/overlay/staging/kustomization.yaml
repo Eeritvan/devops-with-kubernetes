@@ -8,6 +8,7 @@ resources:
 patches:
 - path: manifests/ingress-patch.yaml
 - path: manifests/deployment-patch.yaml
+- path: manifests/rollout-patch.yaml
 images:
 - name: APP/IMAGE
   newName: eeritvan/todo_app

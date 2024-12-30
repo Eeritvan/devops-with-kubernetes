@@ -10,6 +10,7 @@ const app: Express = express();
 let client = new Client();
 let natsClient: any;
 const sc = StringCodec();
+const basePath = process.env.ENVIRONMENT === 'staging' ? '/staging' : '';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,13 +20,15 @@ app.get('/', async (_req: Request, res: Response) => {
 });
 
 const broadcastToNats = (type: string, todo: any) => {
-  if (natsClient) {
-    const message = JSON.stringify({ type, todo });
-    natsClient.publish('todos', sc.encode(message));
+  if (basePath !== '/staging') {
+    if (natsClient) {
+      const message = JSON.stringify({ type, todo });
+      natsClient.publish('todos', sc.encode(message));
+    }
   }
 }
 
-app.get('/todos', async (_req: Request, res: Response) => {
+app.get(`${basePath}/`, async (_req: Request, res: Response) => {
   try {
     const result = await client.query(`SELECT id, task, done FROM todos;`);
     console.log("Loaded todos")
@@ -35,7 +38,7 @@ app.get('/todos', async (_req: Request, res: Response) => {
   }
 });
 
-app.post('/todos', async (req: Request, res: Response) => {
+app.post(`${basePath}/todos`, async (req: Request, res: Response) => {
   try {
     const referer = req.get('Referer')!;
     const result = await client.query(
@@ -51,7 +54,7 @@ app.post('/todos', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/todos/:id', async (req: Request, res: Response) => {
+app.post(`${basePath}/todos/:id`, async (req: Request, res: Response) => {
   try {
     const referer = req.get('Referer')!;
     const result = await client.query(
@@ -67,7 +70,7 @@ app.post('/todos/:id', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/health', async (_req: Request, res: Response) => {
+app.get(`${basePath}/health`, async (_req: Request, res: Response) => {
   try {
     await client.query('SELECT 1');
     res.status(200).send('healthy');
@@ -98,6 +101,8 @@ const connectToNats = async () => {
 
 app.listen(port, async () => {
   connectWithRetry();
-  connectToNats();
+  if (basePath !== '/staging') {
+    connectToNats();
+  }
   console.log(`App listening on port ${port}`);
-});
+}); 

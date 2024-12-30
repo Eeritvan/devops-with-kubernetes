@@ -1,15 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: todoapp-dep
+  name: todo-backend-dep
 spec:
-  selector:
-    matchLabels:
-      app: todoapp
   template:
     spec:
       containers:
-        - name: todo-app
+        - name: todo-backend
           env:
             - name: ENVIRONMENT
               value: "staging"
