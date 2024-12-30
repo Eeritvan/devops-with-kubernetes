@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: cpu-monitor
-  namespace: todoapp
 spec:
   metrics:
   - name: cpu-monitor

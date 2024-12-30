@@ -12,10 +12,11 @@ interface Todo {
 const app: Express = express();
 const port = process.env.PORT;
 const backend = process.env.BACKEND;
+const basePath = process.env.NODE_ENV === 'staging' ? '/staging' : '';
 
 app.use('/image', express.static('image'));
 
-app.get('/', async (_req: Request, res: Response) => {
+app.get(`${basePath}/`, async (_req: Request, res: Response) => {
   let todoListItems = ''; 
   try {
     const listData = await fetch(`${backend}`);
@@ -51,7 +52,7 @@ app.get('/', async (_req: Request, res: Response) => {
   `);
 });
 
-app.get('/health', async (_req: Request, res: Response) => {
+app.get(`${basePath}/health`, async (_req: Request, res: Response) => {
   try {
     await fetch(`${backend}`);
     res.status(200).send('healthy');

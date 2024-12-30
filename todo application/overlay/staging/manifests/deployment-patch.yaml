@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp-dep
+spec:
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    spec:
+      containers:
+        - name: todo-app
+          env:
+            - name: NODE_ENV
+              value: "staging"
