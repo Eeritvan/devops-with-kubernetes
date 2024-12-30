@@ -23,7 +23,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pingpongapps
+      app: pingpongapp
   template:
     metadata:
       labels:
