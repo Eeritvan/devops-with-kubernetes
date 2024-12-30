@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: pingpong
-          image: eeritvan/pingpong_app:latest
+          image: PINGPONG/IMAGE
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 5

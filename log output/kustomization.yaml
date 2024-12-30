@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests/namespace.yaml
+  - manifests/secret.yaml
+  - manifests/pingpong-db.yaml
+  - manifests/pingpong-dep.yaml
+  - manifests/logoutput-dep.yaml
+  - manifests/ingress.yaml
+
+images:
+  - name: LOGAPP/IMAGE
+    newName: eeritvan/log_app:latest
+  - name: PINGPONG/IMAGE
+    newName: eeritvan/pingpong_app:latest
+  - name: STAMPGENERATOR/IMAGE
+    newName: eeritvan/stamp_generator_app:latest
