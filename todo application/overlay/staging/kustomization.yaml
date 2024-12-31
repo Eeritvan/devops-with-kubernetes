@@ -2,25 +2,25 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: todo-staging
 resources:
-  - manifests/namespace.yaml
-  - ./../../base
+- manifests/namespace.yaml
+- ./../../base
 
 patches:
-  - path: manifests/rollout.yaml
-  - path: manifests/ingress.yaml
-  - path: manifests/deployment.yaml
-  - path: manifests/cronjob.yaml
+- path: manifests/rollout.yaml
+- path: manifests/ingress.yaml
+- path: manifests/deployment.yaml
+- path: manifests/cronjob.yaml
 
 images:
 - name: APP/IMAGE
   newName: eeritvan/todo_app
-  newTag: test4
+  newTag: 29f5f659e6c1bd6146d5c52c7814e7f0d031e897
 - name: BACKEND/IMAGE
   newName: eeritvan/todo_backend
-  newTag: test3
+  newTag: 29f5f659e6c1bd6146d5c52c7814e7f0d031e897
 - name: DAILYTODO/IMAGE
   newName: eeritvan/daily_todo
-  newTag: latest
+  newTag: 29f5f659e6c1bd6146d5c52c7814e7f0d031e897
 - name: STAMPGENERATOR/IMAGE
   newName: eeritvan/image_generator_app
-  newTag: latest
+  newTag: 29f5f659e6c1bd6146d5c52c7814e7f0d031e897
