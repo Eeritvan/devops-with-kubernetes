@@ -2,26 +2,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: todo-production
 resources:
-  - manifests/namespace.yaml
-  - ./../../base
-  - manifests/broadcast.yaml
+- manifests/namespace.yaml
+- ./../../base
+- manifests/broadcast.yaml
 
 images:
 - name: APP/IMAGE
   newName: eeritvan/todo_app
-  newTag: test4
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
 - name: BACKEND/IMAGE
   newName: eeritvan/todo_backend
-  newTag: test3
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
 - name: BACKUPBD/IMAGE
   newName: eeritvan/todo_backup
-  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
 - name: BROADCAST/IMAGE
   newName: eeritvan/broadcast
-  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
 - name: DAILYTODO/IMAGE
   newName: eeritvan/daily_todo
-  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
 - name: STAMPGENERATOR/IMAGE
   newName: eeritvan/image_generator_app
-  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+  newTag: 207993f56c68ed3fc31eed6debe0f18a0f7b1638
