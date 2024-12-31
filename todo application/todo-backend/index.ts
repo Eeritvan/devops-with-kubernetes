@@ -103,4 +103,4 @@ app.listen(port, async () => {
   connectToNats();
   console.log(`App listening on port ${port}`);
   console.log(basePath);
-}); 
+});
