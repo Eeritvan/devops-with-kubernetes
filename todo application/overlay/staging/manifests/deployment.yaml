@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp-dep
+spec:
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    spec:
+      containers:
+      - name: todo-app
+        env:
+        - name: BACKEND
+          value: "http://backend-svc:2346/staging/todos"
+        - name: ENVIRONMENT
+          value: "staging"

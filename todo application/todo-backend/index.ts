@@ -20,14 +20,13 @@ app.get('/', async (_req: Request, res: Response) => {
 });
 
 const broadcastToNats = (type: string, todo: any) => {
-  if (basePath !== '/staging') {
-    if (natsClient) {
-      const message = JSON.stringify({ type, todo });
-      natsClient.publish('todos', sc.encode(message));
-    }
+  if (natsClient) {
+    const message = JSON.stringify({ type, todo });
+    natsClient.publish('todos', sc.encode(message));
   }
 }
 
+// this path
 app.get(`${basePath}/`, async (_req: Request, res: Response) => {
   try {
     const result = await client.query(`SELECT id, task, done FROM todos;`);
@@ -75,7 +74,7 @@ app.get(`${basePath}/health`, async (_req: Request, res: Response) => {
     await client.query('SELECT 1');
     res.status(200).send('healthy');
   } catch (error) {
-    res.status(500).send('not healthy - query failed');
+    res.status(500).send('not healthy');
   }
 });
 
@@ -101,8 +100,7 @@ const connectToNats = async () => {
 
 app.listen(port, async () => {
   connectWithRetry();
-  if (basePath !== '/staging') {
-    connectToNats();
-  }
+  connectToNats();
   console.log(`App listening on port ${port}`);
+  console.log(basePath);
 }); 

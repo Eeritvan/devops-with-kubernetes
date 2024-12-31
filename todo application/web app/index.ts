@@ -14,7 +14,7 @@ const port = process.env.PORT;
 const backend = process.env.BACKEND;
 const basePath = process.env.ENVIRONMENT === 'staging' ? '/staging' : '';
 
-app.use('/image', express.static('image'));
+app.use(`${basePath}/image`, express.static('image'));
 
 app.get(`${basePath}/`, async (_req: Request, res: Response) => {
   let todoListItems = ''; 
@@ -39,7 +39,7 @@ app.get(`${basePath}/`, async (_req: Request, res: Response) => {
 
   res.send(`<div>
               <div>
-                <img src="../image/image.jpg" style="width: 400px;">
+                <img src="${basePath}/image/image.jpg" style="width: 400px;">
               </div>
               <form action="${basePath}/todos" method="POST">
                 <input name="todo"/>
@@ -63,4 +63,5 @@ app.get(`${basePath}/health`, async (_req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
+  console.log('base:', basePath);
 });

@@ -46,18 +46,6 @@ jobs:
           docker build --tag "eeritvan/daily_todo:$GITHUB_SHA" "./daily_todo"
           docker push "eeritvan/daily_todo:$GITHUB_SHA"
 
-      - name: Build and publish todo_backup
-        working-directory: ./todo application/
-        run: |-
-          docker build --tag "eeritvan/todo_backup:$GITHUB_SHA" "./todo_backup"
-          docker push "eeritvan/todo_backup:$GITHUB_SHA"
-
-      - name: Build and publish broadcast
-        working-directory: ./todo application/
-        run: |-
-          docker build --tag "eeritvan/broadcast:$GITHUB_SHA" "./broadcaster"
-          docker push "eeritvan/broadcast:$GITHUB_SHA"
-
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2
 
@@ -68,8 +56,6 @@ jobs:
           kustomize edit set image BACKEND/IMAGE=eeritvan/todo_backend:$GITHUB_SHA
           kustomize edit set image STAMPGENERATOR/IMAGE=eeritvan/image_generator_app:$GITHUB_SHA
           kustomize edit set image DAILYTODO/IMAGE=eeritvan/daily_todo:$GITHUB_SHA
-          kustomize edit set image BACKUPBD/IMAGE=eeritvan/todo_backup:$GITHUB_SHA
-          kustomize edit set image BROADCAST/IMAGE=eeritvan/broadcast:$GITHUB_SHA
 
       - name: commit kustomization.yaml to GitHub
         uses: EndBug/add-and-commit@v9

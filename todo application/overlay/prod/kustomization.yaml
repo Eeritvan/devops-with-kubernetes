@@ -3,12 +3,25 @@ kind: Kustomization
 namespace: todo-production
 resources:
   - manifests/namespace.yaml
+  - ./../../base
   - manifests/broadcast.yaml
-  - ../../base
-  
 
 images:
-  - name: BACKUPBD/IMAGE
-    newName: eeritvan/todo_backup:latest
-  - name: BROADCAST/IMAGE
-    newName: eeritvan/broadcast:latest
+- name: APP/IMAGE
+  newName: eeritvan/todo_app
+  newTag: test4
+- name: BACKEND/IMAGE
+  newName: eeritvan/todo_backend
+  newTag: test3
+- name: BACKUPBD/IMAGE
+  newName: eeritvan/todo_backup
+  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+- name: BROADCAST/IMAGE
+  newName: eeritvan/broadcast
+  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+- name: DAILYTODO/IMAGE
+  newName: eeritvan/daily_todo
+  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
+- name: STAMPGENERATOR/IMAGE
+  newName: eeritvan/image_generator_app
+  newTag: 5781e8c7aa7ee96c1b84cbb243abf70251717724
