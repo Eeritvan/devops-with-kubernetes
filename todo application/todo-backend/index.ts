@@ -21,13 +21,13 @@ app.get('/', async (_req: Request, res: Response) => {
 
 const broadcastToNats = (type: string, todo: any) => {
   if (natsClient) {
+    const subject = process.env.ENVIRONMENT === 'staging' ? 'staging' : 'prod';
     const message = JSON.stringify({ type, todo });
-    natsClient.publish('todos', sc.encode(message));
+    natsClient.publish(subject, sc.encode(message));
   }
 }
 
-// this path
-app.get(`${basePath}/`, async (_req: Request, res: Response) => {
+app.get(`${basePath}/todos`, async (_req: Request, res: Response) => {
   try {
     const result = await client.query(`SELECT id, task, done FROM todos;`);
     console.log("Loaded todos")

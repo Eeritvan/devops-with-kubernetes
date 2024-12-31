@@ -6,7 +6,6 @@ resources:
   - manifests/backend-service.yaml
   - manifests/persistentvolume.yaml
   - manifests/persistentvolumeclaim.yaml
-  - manifests/secret.yaml
   - manifests/rollout.yaml
   - manifests/todo-db.yaml
   - manifests/ingress.yaml
