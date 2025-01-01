@@ -14,13 +14,13 @@ patches:
 images:
 - name: APP/IMAGE
   newName: eeritvan/todo_app
-  newTag: 7d012f00c368752ea5e654ef9f0af587d472823d
+  newTag: ecbabc476dd54f052fb9c8d5c845bfe653e063e8
 - name: BACKEND/IMAGE
   newName: eeritvan/todo_backend
-  newTag: 7d012f00c368752ea5e654ef9f0af587d472823d
+  newTag: ecbabc476dd54f052fb9c8d5c845bfe653e063e8
 - name: DAILYTODO/IMAGE
   newName: eeritvan/daily_todo
-  newTag: 7d012f00c368752ea5e654ef9f0af587d472823d
+  newTag: ecbabc476dd54f052fb9c8d5c845bfe653e063e8
 - name: STAMPGENERATOR/IMAGE
   newName: eeritvan/image_generator_app
-  newTag: 7d012f00c368752ea5e654ef9f0af587d472823d
+  newTag: ecbabc476dd54f052fb9c8d5c845bfe653e063e8
