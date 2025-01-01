@@ -4,49 +4,49 @@ metadata:
   name: todoapp-dep
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: todoapp
+  strategy:
+    type: Recreate
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: todoapp
     spec:
-      volumes:
-        - name: image
-          persistentVolumeClaim:
-            claimName: image-claim
-
       containers:
-        - name: todo-app
-          image: APP/IMAGE
-          env:
-          - name: PORT
-            value: "3000"
-          - name: BACKEND
-            value: "http://backend-svc:2346/todos"
-          volumeMounts:
-          - name: image
-            mountPath: /usr/src/app/image
-          resources:
-            limits:
-              cpu: "100m"
-              memory: "100Mi"
-            requests:
-              cpu: "1m"
-              memory: "1Mi"
-
-        - name: image-generator
-          image: STAMPGENERATOR/IMAGE
-          volumeMounts:
-          - name: image
-            mountPath: /usr/src/app/image
-          resources:
-            limits:
-              cpu: "100m"
-              memory: "100Mi"
-            requests:
-              cpu: "1m"
-              memory: "1Mi"
+      - env:
+        - name: PORT
+          value: "3000"
+        - name: BACKEND
+          value: http://backend-svc:2346/todos
+        image: APP/IMAGE
+        name: todo-app
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - mountPath: /usr/src/app/image
+          name: image
+      - image: STAMPGENERATOR/IMAGE
+        name: image-generator
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - mountPath: /usr/src/app/image
+          name: image
+      volumes:
+      - name: image
+        persistentVolumeClaim:
+          claimName: image-claim
