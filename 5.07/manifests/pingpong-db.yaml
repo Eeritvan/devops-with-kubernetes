@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+spec:
+  selector:
+    app: pingpongdb
+  ports:
+  - port: 5432
+    name: db
+    targetPort: 5432
+  clusterIP: None
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  init.sql: |
+    CREATE TABLE pings (
+      id SERIAL PRIMARY KEY,
+      count INTEGER NOT NULL DEFAULT 0
+    );
+    INSERT INTO pings (count) VALUES (0);
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-stset
+spec:
+  serviceName: postgres-svc
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pingpongdb
+  template:
+    metadata:
+      labels:
+        app: pingpongdb
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: config
+
+      containers:
+        - name: pingpongdb
+          image: postgres:alpine
+          env:
+            - name: POSTGRES_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: pingpong-postgres-key
+                  key: DB_PASSWORD
+          ports:
+            - name: db
+              containerPort: 5432
+          volumeMounts:
+            - name: config
+              mountPath: /docker-entrypoint-initdb.d
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          resources:
+            limits:
+              cpu: "150m"
+              memory: "150Mi"
+        
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Mi

@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- manifests/secret.yaml
+- manifests/pingpong-db.yaml
+- manifests/service.yaml
+
+images:
+- name: PINGPONG/IMAGE
+  newName: eeritvan/pingpong_app:ex507

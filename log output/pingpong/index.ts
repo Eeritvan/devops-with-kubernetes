@@ -4,7 +4,7 @@ import { Client } from 'pg';
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.APP_PORT;
 const app: Express = express();
 let client = new Client();
 
