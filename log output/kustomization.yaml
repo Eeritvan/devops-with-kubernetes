@@ -10,7 +10,7 @@ resources:
 images:
 - name: LOGAPP/IMAGE
   newName: eeritvan/log_app
-  newTag: b47cd181f6ac35ef2c95ec925127e02383f8a99a
+  newTag: 82143f4c0368cabae37130ce0a9ee77b4a7c453f
 - name: PINGPONG/IMAGE
   newName: eeritvan/pingpong_app:latest
 - name: STAMPGENERATOR/IMAGE
