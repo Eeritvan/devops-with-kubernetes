@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wikipedia
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikipedia-dep
+  namespace: wikipedia
+  labels:
+    app: wikipedia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wikipedia
+  template:
+    metadata:
+      labels:
+        app: wikipedia
+    spec:
+      volumes:
+        - name: www-pages
+          emptyDir: {}
+      initContainers:
+        - name: get-initial-page
+          image: alpine/curl:latest
+          command:
+            - /bin/sh
+            - -c
+            - curl -o /data/index.html https://en.wikipedia.org/wiki/Kubernetes
+          volumeMounts:
+            - name: www-pages
+              mountPath: /data
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          volumeMounts:
+            - name: www-pages
+              mountPath: /usr/share/nginx/html
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+        - name: fetch-random-page
+          image: alpine/curl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              while true; do
+                sleep $((RANDOM % 600 + 300));
+                curl -Lo /data/index.html https://en.wikipedia.org/wiki/Special:Random;
+              done;
+          volumeMounts:
+            - name: www-pages
+              mountPath: /data
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wikipedia-svc
+  namespace: wikipedia
+spec:
+  type: NodePort
+  selector:
+    app: wikipedia
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+## kubectl port-forward svc/wikipedia-svc 8080:80
